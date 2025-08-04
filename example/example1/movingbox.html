@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sliding Red Box</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      margin-top: 50px;
+      font-family: sans-serif;
+    }
+
+    .grid-wrapper {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      border: 2px solid #333;
+      background-color: #eee;
+    }
+
+    .red-box {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-wrapper">
+    <div class="red-box" id="redBox"></div>
+  </div>
+
+  <script>
+    const gridSize = 5;
+    const cellSize = 50;
+    const redBox = document.getElementById("redBox");
+
+    let pos = { row: 0, col: 0 };
+    let target = { row: 0, col: 0 };
+    let x = 0;
+    let y = 0;
+
+    function updateTargetPosition(key) {
+      switch (key) {
+        case "ArrowUp":
+          if (target.row > 0) target.row--;
+          break;
+        case "ArrowDown":
+          if (target.row < gridSize - 1) target.row++;
+          break;
+        case "ArrowLeft":
+          if (target.col > 0) target.col--;
+          break;
+        case "ArrowRight":
+          if (target.col < gridSize - 1) target.col++;
+          break;
+      }
+    }
+
+    function animate() {
+      const targetX = target.col * cellSize;
+      const targetY = target.row * cellSize;
+
+      // Linear interpolation (LERP)
+      x += (targetX - x) * 0.2;
+      y += (targetY - y) * 0.2;
+
+      redBox.style.transform = `translate(${x}px, ${y}px)`;
+
+    //   requestAnimationFrame(animate);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      updateTargetPosition(e.key);
+    });
+
+    animate();
+    window. requestAnimationFrame(animate); // Start the animation loop
+  </script>
+</body>
+</html>
